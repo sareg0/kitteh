@@ -1,5 +1,5 @@
 <%- model_class = @post.class -%>
-<h1><%=t '.title', :default => model_class.model_name.human %></h1>
+<h1><%= t '.title', :default => model_class.model_name.human %></h1>
 
 <p>
   <strong><%= model_class.human_attribute_name(:title) %>:</strong><br>
@@ -9,4 +9,35 @@
   <strong><%= model_class.human_attribute_name(:body) %>:</strong><br>
   <%= @post.body %>
 </p>
-
+<ul>
+	<% @post.comments.by_latest.each do |comment| %>
+		<li>
+			<h5><%= comment.name %></h5>
+			<p><%= comment.body %></p>
+			<p><%= comment.created_at %></p>
+		</li>
+	<% end %>
+</ul>
+<%= form_for([@post, @post.comments.new], html: {class: 'form-horizontal' }) do |f| %>
+	<div class="control-group">
+		<%= f.label :name, class: 'control-label' %>
+		<div class="controls">
+			<%= f.text_field :name, class: 'text_field' %>
+		</div>
+	</div>
+	<div class="control-group">
+		<%= f.label :email, class: 'control-label' %>
+		<div class="controls">
+			<%= f.text_field :email, class: 'text_field' %>
+		</div>
+	</div>
+	<div class="control-group">
+		<%= f.label :body, class: 'control-label' %>
+		<div class="controls">
+			<%= f.text_area :body %>
+		</div>
+	</div>
+	<div class="form-actions">
+    <%= f.submit nil, class: 'btn btn-primary' %>
+  </div>
+<% end %>

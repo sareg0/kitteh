@@ -1,7 +1,9 @@
 Kitteh::Application.routes.draw do
-  resources :posts, only: [:index, :show]
+  resources :posts, only: [:index, :show] do
+    resources :comments, only: [:create]
+  end
   namespace :admin do
-    resources :posts, except: [:show]
+    resources :posts
     root to: "posts#index"
   end
 
